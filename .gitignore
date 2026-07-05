@@ -1,0 +1,28 @@
+# --- Large data (download from Kaggle) ---
+# Amazon Fine Food Reviews:
+# https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews
+data/
+*.csv
+
+# --- Trained models & generated artifacts (recreate by running the notebooks) ---
+models/
+features/
+*.keras
+*.h5
+*.pkl
+*.pickle
+*.safetensors
+*.npy
+*.npz
+*.pt
+*.ckpt
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+.env
+*.log

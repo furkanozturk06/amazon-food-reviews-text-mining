@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="logo">
+  <text x="60" y="80" text-anchor="middle" font-family="Arial Black, Arial, sans-serif"
+        font-size="92" font-weight="900" fill="#161a2b">a</text>
+  <path d="M20 86 C48 106 80 102 100 80" fill="none" stroke="#ff9900"
+        stroke-width="9" stroke-linecap="round"/>
+  <path d="M100 80 l-3 14 14 -6 z" fill="#ff9900"/>
+</svg>

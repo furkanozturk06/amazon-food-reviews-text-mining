@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Keşifsel Analiz · Duygu Analizi{% endblock %}
+{% block heading %}Keşifsel Analiz{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Eğitim verisi sınıf dağılımı</h2>
+  <p class="muted">Dengelenmiş veri kümesinde her sınıftan yaklaşık eşit sayıda örnek bulunur.</p>
+  <div class="dist-cards">
+    {% for slug, info in distribution.items() %}
+    <div class="dist-card {{ slug }}">
+      <span class="dist-count">{{ '{:,}'.format(info.count).replace(',', '.') }}</span>
+      <span class="dist-label">{{ info.label }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% if top_words %}
+<section class="card">
+  <h2>Sınıfları en çok belirleyen kelimeler</h2>
+  <p class="muted">Logistic Regression katsayılarına göre her sınıfı en güçlü temsil eden terimler.</p>
+  <div class="grid three">
+    {% for slug, info in top_words.items() %}
+    <div class="topword-col">
+      <h3 class="topword-head {{ slug }}">{{ info.label }}</h3>
+      <ol class="topword-list">
+        {% for w in info.words %}
+        <li><span>{{ w[0] }}</span><em>{{ '%.2f'|format(w[1]) }}</em></li>
+        {% endfor %}
+      </ol>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Görsel keşif</h2>
+  <div class="gallery">
+    {% for file, caption in images %}
+    <figure class="shot">
+      <img loading="lazy" src="{{ url_for('serve_image', name=file) }}" alt="{{ caption }}">
+      <figcaption>{{ caption }}</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

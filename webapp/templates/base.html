@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Yorum Duygu Analizi{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark"><img src="{{ url_for('static', filename='img/brand.svg') }}" alt="logo"></span>
+      <div class="brand-text">
+        <strong>Duygu Analizi</strong>
+        <small>Negatif · Nötr · Pozitif</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+      {% set route = request.endpoint %}
+      <a class="nav-item {{ 'active' if route == 'index' }}" href="{{ url_for('index') }}">Tekli Tahmin</a>
+      <a class="nav-item {{ 'active' if route == 'bulk' }}" href="{{ url_for('bulk') }}">Toplu Analiz</a>
+      <a class="nav-item {{ 'active' if route == 'compare' }}" href="{{ url_for('compare') }}">Model Karşılaştırma</a>
+      <a class="nav-item {{ 'active' if route == 'eda' }}" href="{{ url_for('eda') }}">Keşifsel Analiz</a>
+      <a class="nav-item {{ 'active' if route == 'about' }}" href="{{ url_for('about') }}">Hakkında</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="dot ok"></span>{{ model_count }} model yüklü
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">{% block heading %}{% endblock %}</div>
+    </header>
+
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      Amazon Fine Food Reviews üzerinde metin madenciliği · 3 sınıflı duygu analizi
+    </footer>
+  </div>
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

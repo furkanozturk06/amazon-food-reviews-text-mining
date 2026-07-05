@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Model Karşılaştırma · Duygu Analizi{% endblock %}
+{% block heading %}Model Karşılaştırma{% endblock %}
+
+{% block content %}
+{% if best_model %}
+<div class="callout">
+  <span class="callout-tag">En iyi model</span>
+  <span>{{ best_model }}</span>
+</div>
+{% endif %}
+
+<section class="card">
+  <h2>Test kümesi metrikleri</h2>
+  <p class="muted">Değerler 06 numaralı değerlendirme notebook'undaki test sonuçlarından alınmıştır
+  (F1-Macro'ya göre sıralı).</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-Macro</th></tr>
+      </thead>
+      <tbody>
+        {% for r in metrics %}
+        <tr{% if loop.first %} class="row-best"{% endif %}>
+          <td>{{ r.model }}</td>
+          <td>{{ '%.4f'|format(r.accuracy) }}</td>
+          <td>{{ '%.4f'|format(r.precision) }}</td>
+          <td>{{ '%.4f'|format(r.recall) }}</td>
+          <td><b>{{ '%.4f'|format(r.f1) }}</b></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>F1-Macro karşılaştırması</h2>
+  <div class="prob-chart-wrap tall">
+    <canvas id="metric-chart" height="240"></canvas>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Değerlendirme grafikleri</h2>
+  <div class="gallery">
+    {% for file, caption in images %}
+    <figure class="shot">
+      <img loading="lazy" src="{{ url_for('serve_image', name=file) }}" alt="{{ caption }}">
+      <figcaption>{{ caption }}</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+
+<script id="metrics-data" type="application/json">{{ metrics|tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/compare.js') }}" defer></script>
+{% endblock %}

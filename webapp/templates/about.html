@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Hakkında · Duygu Analizi{% endblock %}
+{% block heading %}Hakkında{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Proje</h2>
+  <p>Bu çalışma, Amazon Fine Food Reviews veri kümesi üzerinde metin madenciliği
+  yöntemleriyle müşteri yorumlarının otomatik duygu sınıflandırmasını yapar. Yorumlar
+  ürün puanına göre üç sınıfa ayrılır ve farklı modellerle tahmin edilir.</p>
+
+  <div class="class-cards">
+    <div class="class-card negatif">
+      <span class="class-name">Negatif</span>
+      <span class="class-meta">Puan 1-2</span>
+      <p>Olumsuz deneyim, şikayet, düşük kalite ya da kötü tat içeren yorumlar.</p>
+    </div>
+    <div class="class-card notr">
+      <span class="class-name">Nötr</span>
+      <span class="class-meta">Puan 3</span>
+      <p>Ne olumlu ne olumsuz; ortalama, kararsız ya da dengeli yorumlar.</p>
+    </div>
+    <div class="class-card pozitif">
+      <span class="class-name">Pozitif</span>
+      <span class="class-meta">Puan 4-5</span>
+      <p>Memnuniyet, beğeni ve tavsiye içeren olumlu yorumlar.</p>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Yöntem</h2>
+  <ul class="method-list">
+    <li><b>Ön işleme:</b> HTML/URL temizliği, küçük harfe çevirme, noktalama ve rakam filtreleme,
+    durak kelime çıkarımı, lemmatization.</li>
+    <li><b>Özellik çıkarımı:</b> TF-IDF (unigram–trigram, 50.000 özellik) ve on dört sayısal
+    metin özelliği; derin modeller için dizi (sequence) kodlama; DistilBERT için ise ham metin
+    üzerinde WordPiece tokenizer.</li>
+    <li><b>Modeller:</b> Logistic Regression, SVM, LightGBM, ComplementNB; topluluk yöntemleri
+    (ağırlıklı oylama ve sızıntısız <i>stacking</i>); LSTM ve BiLSTM; ve ince ayarlı (fine-tuned)
+    <b>DistilBERT</b> — en yüksek başarımı veren model.</li>
+    <li><b>Dürüst protokol:</b> Tüm model/hiperparametre/eşik seçimleri yalnızca doğrulama
+    kümesinde yapılmış, test kümesine yalnızca en sonda bir kez bakılmıştır; öznitelik
+    sızıntısı giderilmiştir.</li>
+    <li><b>Değerlendirme:</b> Accuracy, Precision, Recall, F1-Macro, ROC ve Precision-Recall
+    eğrileri, karışıklık matrisleri, hata analizi ve McNemar anlamlılık testi.</li>
+  </ul>
+</section>
+
+{% if metrics %}
+<section class="card">
+  <h2>Model sonuçları</h2>
+  {% if best_model %}<p class="muted">{{ best_model }}</p>{% endif %}
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Model</th><th>Accuracy</th><th>F1-Macro</th></tr></thead>
+      <tbody>
+        {% for r in metrics %}
+        <tr><td>{{ r.model }}</td><td>{{ '%.4f'|format(r.accuracy) }}</td>
+        <td>{{ '%.4f'|format(r.f1) }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Teknik altyapı</h2>
+  <ul class="method-list">
+    <li><b>Analiz:</b> Python, scikit-learn, LightGBM, TensorFlow/Keras, PyTorch,
+    Hugging Face Transformers (DistilBERT), NLTK, TextBlob.</li>
+    <li><b>Arayüz:</b> Flask, HTML, CSS, JavaScript, Chart.js.</li>
+    <li><b>Not:</b> Modeller İngilizce yorumlarla eğitildiği için en güvenilir sonucu İngilizce
+    metinlerde verir.</li>
+  </ul>
+</section>
+{% endblock %}

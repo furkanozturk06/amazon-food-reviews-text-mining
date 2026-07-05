@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Toplu Analiz · Duygu Analizi{% endblock %}
+{% block heading %}Toplu Analiz{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h2>Birden çok yorumu birlikte analiz et</h2>
+  <p class="muted">Her satıra bir yorum yazın ya da bir metin/CSV dosyası yükleyin.
+  Sonuçlar tablo halinde gösterilir, dağılım grafiği çizilir ve CSV olarak indirilebilir.</p>
+
+  <textarea id="bulk-text" rows="8"
+    placeholder="Her satıra bir yorum:
+This product is great and fresh.
+Average taste, nothing special.
+Awful, completely disappointed."></textarea>
+
+  <div class="form-row">
+    <label class="field">
+      <span>Model</span>
+      <select id="bulk-model">
+        {% for m in models %}
+        <option value="{{ m.key }}">{{ m.title }} ({{ m.kind }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label class="field file-field">
+      <span>Dosyadan yükle</span>
+      <input type="file" id="bulk-file" accept=".txt,.csv">
+    </label>
+    <button id="bulk-btn" class="btn primary" type="button">Analiz et</button>
+  </div>
+</section>
+
+<section class="card" id="bulk-result" hidden>
+  <div class="bulk-head">
+    <h2>Özet</h2>
+    <button id="download-btn" class="btn" type="button">CSV indir</button>
+  </div>
+
+  <div class="grid two">
+    <div class="summary-stats" id="bulk-summary"></div>
+    <div class="prob-chart-wrap">
+      <canvas id="bulk-chart" height="180"></canvas>
+    </div>
+  </div>
+
+  <div class="table-wrap scroll">
+    <table class="table" id="bulk-table">
+      <thead>
+        <tr><th>#</th><th>Yorum</th><th>Tahmin</th><th>Güven</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/bulk.js') }}" defer></script>
+{% endblock %}

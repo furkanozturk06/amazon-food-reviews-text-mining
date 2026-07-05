@@ -1,0 +1,31 @@
+/* Renk değişkenleri ve açık/koyu tema tanımları */
+:root {
+  --bg: #eef1f7;
+  --surface: #ffffff;
+  --surface-2: #f1f4fa;
+  --border: #e3e8f1;
+  --text: #1b2030;
+  --text-soft: #586079;
+  --muted: #8b93a7;
+
+  --accent: #5b54e6;
+  --accent-soft: #e6e4fb;
+  --accent-strong: #423bc4;
+
+  /* kenar çubuğu her temada koyu — dashboard kimliği */
+  --side-bg: #161a2b;
+  --side-bg-2: #1f2440;
+  --side-text: #c3c8db;
+  --side-muted: #7e86a3;
+  --side-active: #2a2f52;
+
+  --negatif: #d2453a;
+  --negatif-soft: #fbe2df;
+  --notr: #c08a2c;
+  --notr-soft: #f7eed6;
+  --pozitif: #1f9d5b;
+  --pozitif-soft: #d7f0e1;
+
+  --shadow: 0 1px 2px rgba(22, 26, 43, .05), 0 10px 28px rgba(22, 26, 43, .07);
+  --radius: 14px;
+}

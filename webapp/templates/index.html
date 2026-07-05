@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Tekli Tahmin · Duygu Analizi{% endblock %}
+{% block heading %}Tekli Tahmin{% endblock %}
+
+{% block content %}
+<div class="grid two">
+  <section class="card">
+    <h2>Yorum metni</h2>
+    <p class="muted">İngilizce bir ürün yorumu girin. Model metni Negatif, Nötr veya Pozitif
+    olarak sınıflandırır ve her sınıf için olasılık üretir.</p>
+
+    <label class="field">
+      <span>Başlık (summary) — opsiyonel</span>
+      <input id="review-summary" type="text"
+        placeholder="Örnek: Best coffee ever! / Awful, do not buy" />
+    </label>
+    <p class="muted small">Modeller yorum başlığını da kullanır; başlık çoğu zaman
+    duygu-yoğun olduğu için doğruluğu artırır.</p>
+
+    <textarea id="review-text" rows="6"
+      placeholder="Örnek: This coffee is rich, smooth and arrived perfectly fresh."></textarea>
+
+    <div class="form-row">
+      <label class="field">
+        <span>Model</span>
+        <select id="model-select">
+          {% for m in models %}
+          <option value="{{ m.key }}">{{ m.title }} ({{ m.kind }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button id="predict-btn" class="btn primary" type="button">Analiz et</button>
+    </div>
+
+    <div class="examples">
+      <span class="muted">Hızlı dene:</span>
+      <button class="chip" data-category="olumlu">olumlu</button>
+      <button class="chip" data-category="notr">nötr</button>
+      <button class="chip" data-category="olumsuz">olumsuz</button>
+    </div>
+  </section>
+
+  <section class="card result-card" id="result-card" hidden>
+    <h2>Sonuç</h2>
+    <div class="verdict">
+      <span id="verdict-badge" class="badge">—</span>
+      <span id="verdict-conf" class="verdict-conf"></span>
+    </div>
+
+    <div class="prob-chart-wrap">
+      <canvas id="prob-chart" height="180"></canvas>
+    </div>
+
+    <div class="prob-bars" id="prob-bars"></div>
+
+    <div class="stats-row" id="stats-row"></div>
+
+    <h3>Canlı vurgu (LIME)</h3>
+    <p class="muted small">Girdideki her kelime, tahmin edilen sınıfa katkısına göre renklenir.
+    <span class="hl-legend pos">yeşil</span> tahmini destekler,
+    <span class="hl-legend neg">kırmızı</span> karşı çıkar; renk koyuldukça etki büyüktür.</p>
+    <div class="highlight-box" id="highlight-box"></div>
+
+    <h3>Belirleyici kelimeler</h3>
+    <p class="muted small">Girdideki en yüksek ağırlıklı terimler. Yeşil: tahmini destekleyen,
+    kırmızı: karşı yönde (Logistic Regression katsayılarına göre).</p>
+    <div class="word-tags" id="word-tags"></div>
+  </section>
+</div>
+
+<section class="card" id="all-models-card" hidden>
+  <h2>Tüm modeller bu metin için ne diyor?</h2>
+  <div class="table-wrap">
+    <table class="table" id="all-models-table">
+      <thead>
+        <tr><th>Model</th><th>Tür</th><th>Tahmin</th><th>Güven</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+{% endblock %}
